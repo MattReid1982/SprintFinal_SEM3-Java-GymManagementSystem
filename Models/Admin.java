@@ -6,6 +6,7 @@ class Admin extends User {
         super(id, name, email);
     }
 
+    // toString method to display admin information
     @Override
     public String toString() {
         return super.toString() + " (Admin)";

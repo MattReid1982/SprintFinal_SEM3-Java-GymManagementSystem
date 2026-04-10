@@ -1,5 +1,6 @@
 package Models;
 
+// GymClass class representing a gym class in the GMS, with attributes for class details and methods to manage enrollment
 public class GymClass {
     private int classId;
     private String className;
@@ -36,6 +37,8 @@ public class GymClass {
         return enrolled;
     }
 
+    // Setters
+    // Note: classId is typically not changed, so no setter for it
     public boolean addMember() {
         if (enrolled < capacity) {
             enrolled++;
@@ -45,6 +48,7 @@ public class GymClass {
         }
     }
 
+    // Note: This method removes a member from the class
     public boolean removeMember() {
         if (enrolled > 0) {
             enrolled--;
@@ -54,6 +58,7 @@ public class GymClass {
         }
     }
 
+    // toString method to display gym class information
     @Override
     public String toString() {
         return "Class: " + className + " | Schedule: " + classSchedule + " | Capacity: " + capacity + " | Enrolled: " + enrolled;

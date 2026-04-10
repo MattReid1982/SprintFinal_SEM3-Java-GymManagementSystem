@@ -27,6 +27,7 @@ class Trainer extends User {
         this.yearsExperience = yearsExperience;
     }
 
+    // toString method to display trainer information
     @Override
     public String toString() {
         return super.toString() + ", Speciality: " + speciality + ", Years of Experience: " + yearsExperience;
