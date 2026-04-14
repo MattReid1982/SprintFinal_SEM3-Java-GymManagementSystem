@@ -1,7 +1,6 @@
-package Models;
+package com.keyin.gymmanagement.models;
 
-// Member class extending User, representing a member in the GMS
-class Member extends User {
+public class Member extends User {
     private String membershipType;
     private boolean active;
 
@@ -11,7 +10,6 @@ class Member extends User {
         this.active = active;
     }
 
-    // Getters
     public String getMembershipType() {
         return membershipType;
     }
@@ -20,7 +18,6 @@ class Member extends User {
         return active;
     }
 
-    // Setters
     public void setMembershipType(String membershipType) {
         this.membershipType = membershipType;
     }
@@ -28,7 +25,7 @@ class Member extends User {
     public void setActive(boolean active) {
         this.active = active;
     }
-    // toString method to display member information
+
     @Override
     public String toString() {
         return super.toString() + ", Membership Type: " + membershipType + ", Active: " + active;

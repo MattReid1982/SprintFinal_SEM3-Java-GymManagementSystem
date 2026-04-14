@@ -1,7 +1,6 @@
-package Models;
+package com.keyin.gymmanagement.models;
 
-// Trainer class extending User, representing a trainer in the GMS
-class Trainer extends User {
+public class Trainer extends User {
     private String speciality;
     private int yearsExperience;
 
@@ -10,7 +9,7 @@ class Trainer extends User {
         this.speciality = speciality;
         this.yearsExperience = yearsExperience;
     }
-// Getters
+
     public String getSpeciality() {
         return speciality;
     }
@@ -18,7 +17,7 @@ class Trainer extends User {
     public int getYearsExperience() {
         return yearsExperience;
     }
-// Setters
+
     public void setSpeciality(String speciality) {
         this.speciality = speciality;
     }
@@ -27,7 +26,6 @@ class Trainer extends User {
         this.yearsExperience = yearsExperience;
     }
 
-    // toString method to display trainer information
     @Override
     public String toString() {
         return super.toString() + ", Speciality: " + speciality + ", Years of Experience: " + yearsExperience;

@@ -1,9 +1,8 @@
-package Models;
+package com.keyin.gymmanagement.models;
 
-// User class representing a user in the GMS, serving as a base class for Member and Trainer
 public class User {
     protected int id;
-    protected String name;      
+    protected String name;
     protected String email;
 
     public User(int id, String name, String email) {
@@ -11,7 +10,7 @@ public class User {
         this.name = name;
         this.email = email;
     }
-    // Getters 
+
     public int getId() {
         return id;
     }
@@ -23,8 +22,7 @@ public class User {
     public String getEmail() {
         return email;
     }
-    
-    // Setters
+
     public void setId(int id) {
         this.id = id;
     }
@@ -37,15 +35,8 @@ public class User {
         this.email = email;
     }
 
-    // Method to display user information
-    public void displayInfo() {
-        System.out.println(toString());
-    }
-
-    // toString method to display user information
     @Override
     public String toString() {
         return "ID: " + id + ", Name: " + name + ", Email: " + email;
     }
-
 }

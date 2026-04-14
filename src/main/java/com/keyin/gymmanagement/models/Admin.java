@@ -1,12 +1,10 @@
-package Models;
+package com.keyin.gymmanagement.models;
 
-// Admin class extending User, representing an admin in the GMS
-class Admin extends User {
+public class Admin extends User {
     public Admin(int id, String name, String email) {
         super(id, name, email);
     }
 
-    // toString method to display admin information
     @Override
     public String toString() {
         return super.toString() + " (Admin)";
