@@ -10,6 +10,42 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
+    private static final String RESET = "\u001B[0m";
+    private static final String BOLD = "\u001B[1m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String RED = "\u001B[31m";
+    private static final String PURPLE = "\u001B[35m";
+
+    private static void printHeader(String text) {
+        System.out.println(BOLD + CYAN + text + RESET);
+    }
+
+    private static void printOption(String text) {
+        System.out.println(GREEN + text + RESET);
+    }
+
+    private static void printPrompt(String text) {
+        System.out.print(BOLD + YELLOW + text + RESET);
+    }
+
+    private static void printSuccess(String text) {
+        System.out.println(GREEN + text + RESET);
+    }
+
+    private static void printWarning(String text) {
+        System.out.println(YELLOW + text + RESET);
+    }
+
+    private static void printError(String text) {
+        System.out.println(RED + text + RESET);
+    }
+
+    private static void printSection(String text) {
+        System.out.println(BOLD + PURPLE + text + RESET);
+    }
+
     public static void main(String[] args) {
         List<Member> members = sampleMembers();
         List<Trainer> trainers = sampleTrainers();
@@ -21,7 +57,7 @@ public class App {
 
         while (running) {
             printMenu();
-            System.out.print("Choose an option: ");
+            printPrompt("Choose an option: ");
             String selection = scanner.nextLine().trim();
 
             switch (selection) {
@@ -32,10 +68,10 @@ public class App {
                 case "5" -> enrollMember(scanner, members, classes);
                 case "6" -> removeMember(scanner, members, classes);
                 case "7" -> {
-                    System.out.println("Exiting Gym Management Console. Goodbye!");
+                    printSuccess("Exiting Gym Management Console. Goodbye!");
                     running = false;
                 }
-                default -> System.out.println("Invalid option. Please choose a number from 1 to 7.");
+                default -> printError("Invalid option. Please choose a number from 1 to 7.");
             }
 
             System.out.println();
@@ -45,14 +81,14 @@ public class App {
     }
 
     private static void printMenu() {
-        System.out.println("=== Gym Management Console ===");
-        System.out.println("1. Show all members");
-        System.out.println("2. Show all trainers");
-        System.out.println("3. Show all admins");
-        System.out.println("4. Show all classes");
-        System.out.println("5. Enroll member in a class");
-        System.out.println("6. Remove member from a class");
-        System.out.println("7. Exit");
+        printHeader("=== Gym Management Console ===");
+        printOption("1. Show all members");
+        printOption("2. Show all trainers");
+        printOption("3. Show all admins");
+        printOption("4. Show all classes");
+        printOption("5. Enroll member in a class");
+        printOption("6. Remove member from a class");
+        printOption("7. Exit");
     }
 
     private static List<Member> sampleMembers() {
@@ -84,28 +120,28 @@ public class App {
     }
 
     private static void displayMembers(List<Member> members) {
-        System.out.println("--- Members ---");
+        printSection("--- Members ---");
         for (Member member : members) {
             System.out.println(member);
         }
     }
 
     private static void displayTrainers(List<Trainer> trainers) {
-        System.out.println("--- Trainers ---");
+        printSection("--- Trainers ---");
         for (Trainer trainer : trainers) {
             System.out.println(trainer);
         }
     }
 
     private static void displayAdmins(List<Admin> admins) {
-        System.out.println("--- Admins ---");
+        printSection("--- Admins ---");
         for (Admin admin : admins) {
             System.out.println(admin);
         }
     }
 
     private static void displayClasses(List<GymClass> classes) {
-        System.out.println("--- Gym Classes ---");
+        printSection("--- Gym Classes ---");
         for (GymClass gymClass : classes) {
             System.out.println(gymClass);
         }
@@ -122,9 +158,10 @@ public class App {
         }
 
         if (gymClass.addMember()) {
-            System.out.printf("%s has been enrolled in %s.%n", member.getName(), gymClass.getClassName());
+            printSuccess(String.format("%s has been enrolled in %s.", member.getName(), gymClass.getClassName()));
         } else {
-            System.out.printf("Cannot enroll %s. %s is already full.%n", member.getName(), gymClass.getClassName());
+            printError(
+                    String.format("Cannot enroll %s. %s is already full.", member.getName(), gymClass.getClassName()));
         }
     }
 
@@ -139,16 +176,16 @@ public class App {
         }
 
         if (gymClass.removeMember()) {
-            System.out.printf("%s has been removed from %s.%n", member.getName(), gymClass.getClassName());
+            printSuccess(String.format("%s has been removed from %s.", member.getName(), gymClass.getClassName()));
         } else {
-            System.out.printf("Cannot remove %s. No members are currently enrolled in %s.%n", member.getName(),
-                    gymClass.getClassName());
+            printError(String.format("Cannot remove %s. No members are currently enrolled in %s.", member.getName(),
+                    gymClass.getClassName()));
         }
     }
 
     private static Member chooseMember(Scanner scanner, List<Member> members) {
         displayMembers(members);
-        System.out.print("Enter member ID: ");
+        printPrompt("Enter member ID: ");
         String input = scanner.nextLine().trim();
         try {
             int id = Integer.parseInt(input);
@@ -157,16 +194,16 @@ public class App {
                     return member;
                 }
             }
-            System.out.println("Member not found.");
+            printError("Member not found.");
         } catch (NumberFormatException e) {
-            System.out.println("Invalid member ID.");
+            printError("Invalid member ID.");
         }
         return null;
     }
 
     private static GymClass chooseClass(Scanner scanner, List<GymClass> classes) {
         displayClasses(classes);
-        System.out.print("Enter class ID: ");
+        printPrompt("Enter class ID: ");
         String input = scanner.nextLine().trim();
         try {
             int id = Integer.parseInt(input);
@@ -175,9 +212,9 @@ public class App {
                     return gymClass;
                 }
             }
-            System.out.println("Class not found.");
+            printError("Class not found.");
         } catch (NumberFormatException e) {
-            System.out.println("Invalid class ID.");
+            printError("Invalid class ID.");
         }
         return null;
     }

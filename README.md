@@ -34,4 +34,13 @@ mvn compile exec:java
 mvn exec:java@run
 ```
 
+### Console output styling
+
+The main console uses ANSI helper methods in `src/main/java/com/keyin/gymmanagement/App.java` to colorize output:
+
+- `printSection(...)` for section headers
+- `printSuccess(...)` for success messages
+- `printError(...)` for error messages
+- `printPrompt(...)` for user prompts
+
 > Run these commands from the project root: `/Users/student2/Documents/Keyin/SprintFinal_SEM3-Java-GymManagementSystem`.
