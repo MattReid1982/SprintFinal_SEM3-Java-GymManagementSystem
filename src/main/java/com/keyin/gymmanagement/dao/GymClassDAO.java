@@ -10,10 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Data Access Object for GymClass entity.
- * Handles all database operations related to gym classes.
- */
 public class GymClassDAO implements IBaseDAO<GymClass> {
     private final Connection connection;
 

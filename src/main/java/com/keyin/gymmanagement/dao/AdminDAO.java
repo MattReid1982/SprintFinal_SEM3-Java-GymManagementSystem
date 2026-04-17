@@ -10,10 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Data Access Object for Admin entity.
- * Handles all database operations related to admins.
- */
 public class AdminDAO implements IBaseDAO<Admin> {
     private final Connection connection;
 
