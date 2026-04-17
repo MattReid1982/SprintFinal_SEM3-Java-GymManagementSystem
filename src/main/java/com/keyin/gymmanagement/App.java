@@ -1,10 +1,17 @@
 package com.keyin.gymmanagement;
 
+import com.keyin.gymmanagement.db.AdminRepository;
+import com.keyin.gymmanagement.db.DatabaseConnection;
+import com.keyin.gymmanagement.db.GymClassRepository;
+import com.keyin.gymmanagement.db.MemberRepository;
+import com.keyin.gymmanagement.db.TrainerRepository;
 import com.keyin.gymmanagement.models.Admin;
 import com.keyin.gymmanagement.models.GymClass;
 import com.keyin.gymmanagement.models.Member;
 import com.keyin.gymmanagement.models.Trainer;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -47,10 +54,29 @@ public class App {
     }
 
     public static void main(String[] args) {
-        List<Member> members = sampleMembers();
-        List<Trainer> trainers = sampleTrainers();
-        List<Admin> admins = sampleAdmins();
-        List<GymClass> classes = sampleClasses();
+        Connection connection = null;
+        List<Member> members;
+        List<Trainer> trainers;
+        List<Admin> admins;
+        List<GymClass> classes;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            DatabaseConnection.initializeSchema(connection);
+            DatabaseConnection.seedDefaultsIfEmpty(connection);
+
+            members = MemberRepository.findAll(connection);
+            trainers = TrainerRepository.findAll(connection);
+            admins = AdminRepository.findAll(connection);
+            classes = GymClassRepository.findAll(connection);
+            printSuccess("Connected to PostgreSQL on 127.0.0.1 using default username 'postgres'.");
+        } catch (SQLException e) {
+            printWarning("PostgreSQL unavailable. Running with in-memory sample data.");
+            members = sampleMembers();
+            trainers = sampleTrainers();
+            admins = sampleAdmins();
+            classes = sampleClasses();
+        }
 
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
@@ -65,8 +91,8 @@ public class App {
                 case "2" -> displayTrainers(trainers);
                 case "3" -> displayAdmins(admins);
                 case "4" -> displayClasses(classes);
-                case "5" -> enrollMember(scanner, members, classes);
-                case "6" -> removeMember(scanner, members, classes);
+                case "5" -> enrollMember(scanner, members, classes, connection);
+                case "6" -> removeMember(scanner, members, classes, connection);
                 case "7" -> {
                     printSuccess("Exiting Gym Management Console. Goodbye!");
                     running = false;
@@ -78,6 +104,19 @@ public class App {
         }
 
         scanner.close();
+        closeConnectionQuietly(connection);
+    }
+
+    private static void closeConnectionQuietly(Connection connection) {
+        if (connection == null) {
+            return;
+        }
+
+        try {
+            connection.close();
+        } catch (SQLException ignored) {
+            // No action needed while shutting down.
+        }
     }
 
     private static void printMenu() {
@@ -147,7 +186,8 @@ public class App {
         }
     }
 
-    private static void enrollMember(Scanner scanner, List<Member> members, List<GymClass> classes) {
+    private static void enrollMember(Scanner scanner, List<Member> members, List<GymClass> classes,
+            Connection connection) {
         Member member = chooseMember(scanner, members);
         if (member == null) {
             return;
@@ -158,6 +198,7 @@ public class App {
         }
 
         if (gymClass.addMember()) {
+            persistClassEnrollment(connection, gymClass);
             printSuccess(String.format("%s has been enrolled in %s.", member.getName(), gymClass.getClassName()));
         } else {
             printError(
@@ -165,7 +206,8 @@ public class App {
         }
     }
 
-    private static void removeMember(Scanner scanner, List<Member> members, List<GymClass> classes) {
+    private static void removeMember(Scanner scanner, List<Member> members, List<GymClass> classes,
+            Connection connection) {
         Member member = chooseMember(scanner, members);
         if (member == null) {
             return;
@@ -176,10 +218,23 @@ public class App {
         }
 
         if (gymClass.removeMember()) {
+            persistClassEnrollment(connection, gymClass);
             printSuccess(String.format("%s has been removed from %s.", member.getName(), gymClass.getClassName()));
         } else {
             printError(String.format("Cannot remove %s. No members are currently enrolled in %s.", member.getName(),
                     gymClass.getClassName()));
+        }
+    }
+
+    private static void persistClassEnrollment(Connection connection, GymClass gymClass) {
+        if (connection == null) {
+            return;
+        }
+
+        try {
+            GymClassRepository.updateEnrolledCount(connection, gymClass.getClassId(), gymClass.getEnrolled());
+        } catch (SQLException e) {
+            printWarning("Enrollment updated in memory but could not be saved to PostgreSQL.");
         }
     }
 
