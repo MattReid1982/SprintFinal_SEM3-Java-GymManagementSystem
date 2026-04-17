@@ -1,3 +1,8 @@
+/**
+ * Main entry point for the Gym Management System application.
+ * Orchestrates the lifecycle of the application, including database initialization,
+ * user authentication, and role-based menu navigation.
+ */
 package com.keyin.gymmanagement;
 
 import com.keyin.gymmanagement.dao.AdminDAO;
@@ -41,14 +46,17 @@ public class App {
     private static AdminUIHandler adminHandler;
     private static UIHelper uiHelper;
 
+    /**
+     * Main entry point. Establishes database connection, authenticates user, and
+     * routes to appropriate menu.
+     */
     public static void main(String[] args) {
         try {
             connection = DatabaseConnection.getConnection();
-            DatabaseConnection.initializeSchema(connection);
-            DatabaseConnection.seedDefaultsIfEmpty(connection);
 
             initializeDAOs();
             uiHelper = new UIHelper();
+            uiHelper.clearTerminal();
             uiHelper.printSuccess("Connected to PostgreSQL on 127.0.0.1 using default username 'postgres'.");
 
             scanner = new Scanner(System.in);
@@ -81,6 +89,9 @@ public class App {
             e.printStackTrace();
         } finally {
             closeResources();
+            /**
+             * Initializes all Data Access Objects with the active database connection.
+             */
         }
     }
 
@@ -90,6 +101,10 @@ public class App {
         trainerDAO = new TrainerDAO(connection);
         adminDAO = new AdminDAO(connection);
         gymClassDAO = new GymClassDAO(connection);
+        /**
+         * Displays the main menu and routes to role-specific handlers (Member, Trainer,
+         * or Admin).
+         */
         merchandiseDAO = new MerchandiseDAO(connection);
     }
 

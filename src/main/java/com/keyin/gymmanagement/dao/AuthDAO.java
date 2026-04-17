@@ -1,3 +1,7 @@
+/**
+* Data Access Object for authentication operations.
+* Handles user login, registration, and user credential management.
+*/
 package com.keyin.gymmanagement.dao;
 
 import com.keyin.gymmanagement.models.UserAuth;
@@ -15,6 +19,10 @@ public class AuthDAO {
         this.connection = connection;
     }
 
+    /**
+     * Authenticates a user by username and password. Returns UserAuth if
+     * credentials are valid, null otherwise.
+     */
     public UserAuth login(String username, String password) throws SQLException {
         String sql = "SELECT user_id, username, email, password_hash, role FROM users WHERE username = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -33,6 +41,10 @@ public class AuthDAO {
                 }
             }
         }
+        /**
+         * Registers a new user with hashed password. Returns true if successful, false
+         * if username/email exists.
+         */
         return null;
     }
 
@@ -50,6 +62,9 @@ public class AuthDAO {
                 return false;
             }
             throw e;
+            /**
+             * Retrieves a user by username without requiring password verification.
+             */
         }
     }
 
@@ -65,6 +80,9 @@ public class AuthDAO {
                             rs.getString("email"),
                             rs.getString("password_hash"),
                             rs.getString("role"));
+                    /**
+                     * Checks if a username already exists in the database.
+                     */
                 }
             }
         }
@@ -78,6 +96,9 @@ public class AuthDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt(1) > 0;
+                    /**
+                     * Retrieves a user by their unique ID.
+                     */
                 }
             }
         }
@@ -93,6 +114,9 @@ public class AuthDAO {
                     return new UserAuth(
                             rs.getInt("user_id"),
                             rs.getString("username"),
+                            /**
+                             * Updates the role of an existing user (e.g., MEMBER to TRAINER).
+                             */
                             rs.getString("email"),
                             rs.getString("password_hash"),
                             rs.getString("role"));

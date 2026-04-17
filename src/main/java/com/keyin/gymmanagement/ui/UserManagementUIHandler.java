@@ -27,9 +27,8 @@ public class UserManagementUIHandler {
     public void userManagementMenu() {
         boolean running = true;
         while (running) {
-            uiHelper.printHeader("╔════════════════════════════════════════╗");
-            uiHelper.printHeader("║     USER MANAGEMENT MENU               ║");
-            uiHelper.printHeader("╚════════════════════════════════════════╝");
+            uiHelper.clearTerminal();
+            uiHelper.printSubmenuHeader("USER MANAGEMENT MENU");
             uiHelper.printOption("1. View All Members");
             uiHelper.printOption("2. View All Trainers");
             uiHelper.printOption("3. View All Admins");

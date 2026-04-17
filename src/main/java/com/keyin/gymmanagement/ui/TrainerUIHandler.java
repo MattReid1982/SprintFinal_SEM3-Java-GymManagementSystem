@@ -23,14 +23,9 @@ public class TrainerUIHandler {
     }
 
     public boolean trainerMenu() {
-        uiHelper.printHeader("╔════════════════════════════════════════╗");
-        uiHelper.printHeader("║  GYM MANAGEMENT SYSTEM - TRAINER MENU  ║");
-        System.out.println(UIHelper.BRIGHT_YELLOW + "║  User: " + currentUser.getUsername().toUpperCase() + " | Role: "
-                + currentUser.getRole() + UIHelper.BRIGHT_YELLOW
-                + String.format("%" + (20 - currentUser.getUsername().length() - currentUser.getRole().length()) + "s",
-                        "")
-                + "║" + UIHelper.RESET);
-        uiHelper.printHeader("╚════════════════════════════════════════╝");
+        uiHelper.clearTerminal();
+        uiHelper.printMenuHeader("GYM MANAGEMENT SYSTEM - TRAINER MENU", currentUser.getUsername(),
+                currentUser.getRole());
         uiHelper.printOption("1. Class Management");
         uiHelper.printOption("2. View Members");
         uiHelper.printOption("3. Reports");

@@ -29,14 +29,9 @@ public class MemberUIHandler {
     }
 
     public boolean memberMenu() {
-        uiHelper.printHeader("╔════════════════════════════════════════╗");
-        uiHelper.printHeader("║  GYM MANAGEMENT SYSTEM - MEMBER MENU   ║");
-        System.out.println(UIHelper.BRIGHT_YELLOW + "║  User: " + currentUser.getUsername().toUpperCase() + " | Role: "
-                + currentUser.getRole() + UIHelper.BRIGHT_YELLOW
-                + String.format("%" + (20 - currentUser.getUsername().length() - currentUser.getRole().length()) + "s",
-                        "")
-                + "║" + UIHelper.RESET);
-        uiHelper.printHeader("╚════════════════════════════════════════╝");
+        uiHelper.clearTerminal();
+        uiHelper.printMenuHeader("GYM MANAGEMENT SYSTEM - MEMBER MENU", currentUser.getUsername(),
+                currentUser.getRole());
         uiHelper.printOption("1. View My Membership");
         uiHelper.printOption("2. View Classes & Enroll");
         uiHelper.printOption("3. Shop Merchandise");

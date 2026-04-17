@@ -32,9 +32,8 @@ public class ReportsUIHandler {
     public void reportsMenu() {
         boolean running = true;
         while (running) {
-            uiHelper.printHeader("╔════════════════════════════════════════╗");
-            uiHelper.printHeader("║           REPORTS MENU                 ║");
-            uiHelper.printHeader("╚════════════════════════════════════════╝");
+            uiHelper.clearTerminal();
+            uiHelper.printSubmenuHeader("REPORTS MENU");
             uiHelper.printOption("1. Member Summary Report");
             uiHelper.printOption("2. Class Enrollment Report");
             uiHelper.printOption("3. Trainer Statistics");

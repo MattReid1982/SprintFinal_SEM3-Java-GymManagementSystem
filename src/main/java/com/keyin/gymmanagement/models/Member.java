@@ -1,5 +1,8 @@
 package com.keyin.gymmanagement.models;
 
+/**
+ * Represents a gym member with a membership type and active status.
+ */
 public class Member extends User {
     private String membershipType;
     private boolean active;

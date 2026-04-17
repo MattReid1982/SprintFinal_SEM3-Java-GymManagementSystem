@@ -28,14 +28,9 @@ public class AdminUIHandler {
     }
 
     public boolean adminMenu() {
-        uiHelper.printHeader("╔════════════════════════════════════════╗");
-        uiHelper.printHeader("║  GYM MANAGEMENT SYSTEM - ADMIN MENU    ║");
-        System.out.println(UIHelper.BRIGHT_YELLOW + "║  User: " + currentUser.getUsername().toUpperCase() + " | Role: "
-                + currentUser.getRole() + UIHelper.BRIGHT_YELLOW
-                + String.format("%" + (20 - currentUser.getUsername().length() - currentUser.getRole().length()) + "s",
-                        "")
-                + "║" + UIHelper.RESET);
-        uiHelper.printHeader("╚════════════════════════════════════════╝");
+        uiHelper.clearTerminal();
+        uiHelper.printMenuHeader("GYM MANAGEMENT SYSTEM - ADMIN MENU", currentUser.getUsername(),
+                currentUser.getRole());
         uiHelper.printOption("1. User Management");
         uiHelper.printOption("2. Class Management");
         uiHelper.printOption("3. Merchandise Management");
