@@ -10,7 +10,7 @@ import java.sql.Statement;
 public final class DatabaseConnection {
     private static final String DEFAULT_HOST = "127.0.0.1";
     private static final String DEFAULT_PORT = "5432";
-    private static final String DEFAULT_DB = "postgres";
+    private static final String DEFAULT_DB = "gym_db";
     private static final String DEFAULT_USER = "postgres";
 
     private DatabaseConnection() {
