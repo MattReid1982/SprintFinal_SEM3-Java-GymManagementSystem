@@ -2,11 +2,12 @@
   "java.project.sourcePaths": [
     "src/main/java"
   ],
+  "java.configuration.enablePreview": false,
   "java.configuration.runtimes": [
     {
       "name": "JavaSE-21",
       "path": "/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"
     }
-],
-"java.configuration.updateBuildConfiguration": "interactive"
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

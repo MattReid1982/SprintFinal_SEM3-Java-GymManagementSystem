@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.keyin.gymmanagement.security.PasswordUtil;
+
 public final class DatabaseConnection {
     private static final String DEFAULT_HOST = "127.0.0.1";
     private static final String DEFAULT_PORT = "5432";
@@ -28,6 +30,17 @@ public final class DatabaseConnection {
     }
 
     public static void initializeSchema(Connection connection) throws SQLException {
+        String createUsers = """
+                CREATE TABLE IF NOT EXISTS users (
+                    user_id SERIAL PRIMARY KEY,
+                    username VARCHAR(50) NOT NULL UNIQUE,
+                    email VARCHAR(150) NOT NULL UNIQUE,
+                    password_hash VARCHAR(255) NOT NULL,
+                    role VARCHAR(20) NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+                """;
+
         String createMembers = """
                 CREATE TABLE IF NOT EXISTS members (
                     id INTEGER PRIMARY KEY,
@@ -66,19 +79,73 @@ public final class DatabaseConnection {
                 )
                 """;
 
+        String createMerchandise = """
+                CREATE TABLE IF NOT EXISTS merchandise (
+                    product_id SERIAL PRIMARY KEY,
+                    product_name VARCHAR(100) NOT NULL,
+                    category VARCHAR(50) NOT NULL,
+                    price DECIMAL(10, 2) NOT NULL,
+                    quantity_in_stock INTEGER NOT NULL DEFAULT 0,
+                    description TEXT
+                )
+                """;
+
         try (Statement statement = connection.createStatement()) {
+            statement.execute(createUsers);
             statement.execute(createMembers);
             statement.execute(createTrainers);
             statement.execute(createAdmins);
             statement.execute(createGymClasses);
+            statement.execute(createMerchandise);
+        }
+
+        applySchemaMigrations(connection);
+    }
+
+    private static void applySchemaMigrations(Connection connection) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("UPDATE users SET role = UPPER(role) WHERE role IS NOT NULL");
+            statement.execute(
+                    "UPDATE users SET role = 'GUEST' WHERE role NOT IN ('ADMIN', 'TRAINER', 'MEMBER', 'GUEST') OR role IS NULL");
+            statement.execute("CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)");
+            statement.execute("CREATE INDEX IF NOT EXISTS idx_users_role ON users(role)");
+
+            statement.execute("""
+                    DO $$
+                    BEGIN
+                        IF NOT EXISTS (
+                            SELECT 1 FROM pg_constraint WHERE conname = 'chk_users_role'
+                        ) THEN
+                            ALTER TABLE users
+                            ADD CONSTRAINT chk_users_role
+                            CHECK (role IN ('ADMIN', 'TRAINER', 'MEMBER', 'GUEST'));
+                        END IF;
+                    END $$;
+                    """);
+
+            statement.execute("""
+                    DO $$
+                    BEGIN
+                        IF NOT EXISTS (
+                            SELECT 1 FROM pg_constraint WHERE conname = 'fk_members_user'
+                        ) THEN
+                            ALTER TABLE members
+                            ADD CONSTRAINT fk_members_user
+                            FOREIGN KEY (id) REFERENCES users(user_id)
+                            ON DELETE CASCADE;
+                        END IF;
+                    END $$;
+                    """);
         }
     }
 
     public static void seedDefaultsIfEmpty(Connection connection) throws SQLException {
+        seedUsersIfEmpty(connection);
         seedMembersIfEmpty(connection);
         seedTrainersIfEmpty(connection);
         seedAdminsIfEmpty(connection);
         seedGymClassesIfEmpty(connection);
+        seedMerchandiseIfEmpty(connection);
     }
 
     private static boolean tableHasRows(Connection connection, String tableName) throws SQLException {
@@ -86,6 +153,44 @@ public final class DatabaseConnection {
         try (Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(sql)) {
             return resultSet.next() && resultSet.getInt(1) > 0;
+        }
+    }
+
+    private static void seedUsersIfEmpty(Connection connection) throws SQLException {
+        if (tableHasRows(connection, "users")) {
+            return;
+        }
+
+        String insert = "INSERT INTO users (username, email, password_hash, role) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
+            String adminHash = PasswordUtil.hashPassword("admin123");
+            String memberHash = PasswordUtil.hashPassword("member123");
+
+            preparedStatement.setString(1, "admin");
+            preparedStatement.setString(2, "admin@gym.com");
+            preparedStatement.setString(3, adminHash);
+            preparedStatement.setString(4, "ADMIN");
+            preparedStatement.addBatch();
+
+            preparedStatement.setString(1, "trainer1");
+            preparedStatement.setString(2, "liam.smith@gym.com");
+            preparedStatement.setString(3, PasswordUtil.hashPassword("trainer123"));
+            preparedStatement.setString(4, "TRAINER");
+            preparedStatement.addBatch();
+
+            preparedStatement.setString(1, "member1");
+            preparedStatement.setString(2, "ava.carter@gym.com");
+            preparedStatement.setString(3, memberHash);
+            preparedStatement.setString(4, "MEMBER");
+            preparedStatement.addBatch();
+
+            preparedStatement.setString(1, "member2");
+            preparedStatement.setString(2, "noah.johnson@gym.com");
+            preparedStatement.setString(3, memberHash);
+            preparedStatement.setString(4, "MEMBER");
+            preparedStatement.addBatch();
+
+            preparedStatement.executeBatch();
         }
     }
 
@@ -184,6 +289,35 @@ public final class DatabaseConnection {
             preparedStatement.setInt(4, 10);
             preparedStatement.setInt(5, 0);
             preparedStatement.addBatch();
+
+            preparedStatement.executeBatch();
+        }
+    }
+
+    private static void seedMerchandiseIfEmpty(Connection connection) throws SQLException {
+        if (tableHasRows(connection, "merchandise")) {
+            return;
+        }
+
+        String insert = "INSERT INTO merchandise (product_name, category, price, quantity_in_stock, description) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
+            Object[][] products = {
+                    { "Water Bottle 1L", "Accessories", 15.99, 50, "Durable stainless steel water bottle" },
+                    { "Gym Towel", "Accessories", 9.99, 100, "Premium microfiber towel" },
+                    { "Resistance Bands Set", "Equipment", 24.99, 30, "Set of 5 resistance bands" },
+                    { "Gym T-Shirt", "Apparel", 19.99, 75, "High-performance cotton blend" },
+                    { "Yoga Mat", "Equipment", 34.99, 25, "Non-slip yoga mat with carrying strap" },
+                    { "Dumbbells 10lb Pair", "Equipment", 29.99, 40, "Adjustable dumbbells" }
+            };
+
+            for (Object[] product : products) {
+                preparedStatement.setString(1, (String) product[0]);
+                preparedStatement.setString(2, (String) product[1]);
+                preparedStatement.setDouble(3, (Double) product[2]);
+                preparedStatement.setInt(4, (Integer) product[3]);
+                preparedStatement.setString(5, (String) product[4]);
+                preparedStatement.addBatch();
+            }
 
             preparedStatement.executeBatch();
         }

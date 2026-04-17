@@ -10,10 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Data Access Object for Trainer entity.
- * Handles all database operations related to trainers.
- */
 public class TrainerDAO implements IBaseDAO<Trainer> {
     private final Connection connection;
 

@@ -10,10 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Data Access Object for Member entity.
- * Handles all database operations related to members.
- */
 public class MemberDAO implements IBaseDAO<Member> {
     private final Connection connection;
 
