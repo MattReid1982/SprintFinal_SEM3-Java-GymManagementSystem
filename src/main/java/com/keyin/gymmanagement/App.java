@@ -1,10 +1,17 @@
 package com.keyin.gymmanagement;
 
+import com.keyin.gymmanagement.dao.AdminDAO;
+import com.keyin.gymmanagement.dao.GymClassDAO;
+import com.keyin.gymmanagement.dao.MemberDAO;
+import com.keyin.gymmanagement.dao.TrainerDAO;
+import com.keyin.gymmanagement.db.DatabaseConnection;
 import com.keyin.gymmanagement.models.Admin;
 import com.keyin.gymmanagement.models.GymClass;
 import com.keyin.gymmanagement.models.Member;
 import com.keyin.gymmanagement.models.Trainer;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -47,11 +54,34 @@ public class App {
     }
 
     public static void main(String[] args) {
-        List<Member> members = sampleMembers();
-        List<Trainer> trainers = sampleTrainers();
-        List<Admin> admins = sampleAdmins();
-        List<GymClass> classes = sampleClasses();
+        Connection connection = null;
+        List<Member> members;
+        List<Trainer> trainers;
+        List<Admin> admins;
+        List<GymClass> classes;
 
+        try {
+            connection = DatabaseConnection.getConnection();
+            DatabaseConnection.initializeSchema(connection);
+            DatabaseConnection.seedDefaultsIfEmpty(connection);
+
+            MemberDAO memberDAO = new MemberDAO(connection);
+            TrainerDAO trainerDAO = new TrainerDAO(connection);
+            AdminDAO adminDAO = new AdminDAO(connection);
+            GymClassDAO gymClassDAO = new GymClassDAO(connection);
+
+            members = memberDAO.findAll();
+            trainers = trainerDAO.findAll();
+            admins = adminDAO.findAll();
+            classes = gymClassDAO.findAll();
+            printSuccess("Connected to PostgreSQL on 127.0.0.1 using default username 'postgres'.");
+        } catch (SQLException e) {
+            printError("Failed to connect to PostgreSQL database. Please ensure the database is running.");
+            e.printStackTrace();
+            return;
+        }
+
+        GymClassDAO gymClassDAO = new GymClassDAO(connection);
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
@@ -65,8 +95,8 @@ public class App {
                 case "2" -> displayTrainers(trainers);
                 case "3" -> displayAdmins(admins);
                 case "4" -> displayClasses(classes);
-                case "5" -> enrollMember(scanner, members, classes);
-                case "6" -> removeMember(scanner, members, classes);
+                case "5" -> enrollMember(scanner, members, classes, gymClassDAO);
+                case "6" -> removeMember(scanner, members, classes, gymClassDAO);
                 case "7" -> {
                     printSuccess("Exiting Gym Management Console. Goodbye!");
                     running = false;
@@ -78,6 +108,19 @@ public class App {
         }
 
         scanner.close();
+        closeConnectionQuietly(connection);
+    }
+
+    private static void closeConnectionQuietly(Connection connection) {
+        if (connection == null) {
+            return;
+        }
+
+        try {
+            connection.close();
+        } catch (SQLException ignored) {
+            // No action needed while shutting down.
+        }
     }
 
     private static void printMenu() {
@@ -89,34 +132,6 @@ public class App {
         printOption("5. Enroll member in a class");
         printOption("6. Remove member from a class");
         printOption("7. Exit");
-    }
-
-    private static List<Member> sampleMembers() {
-        List<Member> members = new ArrayList<>();
-        members.add(new Member(1, "Ava Carter", "ava.carter@example.com", "Standard", true));
-        members.add(new Member(2, "Noah Johnson", "noah.johnson@example.com", "Premium", true));
-        members.add(new Member(3, "Mia Lopez", "mia.lopez@example.com", "Student", false));
-        return members;
-    }
-
-    private static List<Trainer> sampleTrainers() {
-        List<Trainer> trainers = new ArrayList<>();
-        trainers.add(new Trainer(1, "Liam Smith", "liam.smith@example.com", "Strength Training", 6));
-        trainers.add(new Trainer(2, "Emma Brown", "emma.brown@example.com", "Yoga", 4));
-        return trainers;
-    }
-
-    private static List<Admin> sampleAdmins() {
-        List<Admin> admins = new ArrayList<>();
-        admins.add(new Admin(1, "Olivia Hall", "olivia.hall@example.com"));
-        return admins;
-    }
-
-    private static List<GymClass> sampleClasses() {
-        List<GymClass> classes = new ArrayList<>();
-        classes.add(new GymClass(1, "Morning Strength", "Mon/Wed/Fri 07:00", 12));
-        classes.add(new GymClass(2, "Evening Yoga", "Tue/Thu 18:30", 10));
-        return classes;
     }
 
     private static void displayMembers(List<Member> members) {
@@ -147,7 +162,8 @@ public class App {
         }
     }
 
-    private static void enrollMember(Scanner scanner, List<Member> members, List<GymClass> classes) {
+    private static void enrollMember(Scanner scanner, List<Member> members, List<GymClass> classes,
+            GymClassDAO gymClassDAO) {
         Member member = chooseMember(scanner, members);
         if (member == null) {
             return;
@@ -158,6 +174,7 @@ public class App {
         }
 
         if (gymClass.addMember()) {
+            persistClassEnrollment(gymClassDAO, gymClass);
             printSuccess(String.format("%s has been enrolled in %s.", member.getName(), gymClass.getClassName()));
         } else {
             printError(
@@ -165,7 +182,8 @@ public class App {
         }
     }
 
-    private static void removeMember(Scanner scanner, List<Member> members, List<GymClass> classes) {
+    private static void removeMember(Scanner scanner, List<Member> members, List<GymClass> classes,
+            GymClassDAO gymClassDAO) {
         Member member = chooseMember(scanner, members);
         if (member == null) {
             return;
@@ -176,10 +194,23 @@ public class App {
         }
 
         if (gymClass.removeMember()) {
+            persistClassEnrollment(gymClassDAO, gymClass);
             printSuccess(String.format("%s has been removed from %s.", member.getName(), gymClass.getClassName()));
         } else {
             printError(String.format("Cannot remove %s. No members are currently enrolled in %s.", member.getName(),
                     gymClass.getClassName()));
+        }
+    }
+
+    private static void persistClassEnrollment(GymClassDAO gymClassDAO, GymClass gymClass) {
+        if (gymClassDAO == null) {
+            return;
+        }
+
+        if (gymClassDAO.update(gymClass)) {
+            printSuccess("Changes saved to database.");
+        } else {
+            printWarning("Enrollment updated in memory but could not be saved to PostgreSQL.");
         }
     }
 

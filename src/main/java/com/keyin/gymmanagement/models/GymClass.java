@@ -8,11 +8,15 @@ public class GymClass {
     private int enrolled;
 
     public GymClass(int classId, String className, String classSchedule, int capacity) {
+        this(classId, className, classSchedule, capacity, 0);
+    }
+
+    public GymClass(int classId, String className, String classSchedule, int capacity, int enrolled) {
         this.classId = classId;
         this.className = className;
         this.classSchedule = classSchedule;
         this.capacity = capacity;
-        this.enrolled = 0;
+        this.enrolled = enrolled;
     }
 
     public int getClassId() {
@@ -33,6 +37,10 @@ public class GymClass {
 
     public int getEnrolled() {
         return enrolled;
+    }
+
+    public void setEnrolled(int enrolled) {
+        this.enrolled = enrolled;
     }
 
     public boolean addMember() {
