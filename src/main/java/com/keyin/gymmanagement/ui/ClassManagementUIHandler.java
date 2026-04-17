@@ -23,9 +23,8 @@ public class ClassManagementUIHandler {
     public void classManagementMenu() {
         boolean running = true;
         while (running) {
-            uiHelper.printHeader("╔════════════════════════════════════════╗");
-            uiHelper.printHeader("║     CLASS MANAGEMENT MENU              ║");
-            uiHelper.printHeader("╚════════════════════════════════════════╝");
+            uiHelper.clearTerminal();
+            uiHelper.printSubmenuHeader("CLASS MANAGEMENT MENU");
             uiHelper.printOption("1. View All Classes");
             uiHelper.printOption("2. Enroll Member in Class");
             uiHelper.printOption("3. Remove Member from Class");

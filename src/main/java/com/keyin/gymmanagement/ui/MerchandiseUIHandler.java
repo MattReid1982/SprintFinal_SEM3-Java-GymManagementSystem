@@ -19,9 +19,8 @@ public class MerchandiseUIHandler {
     public void merchandiseManagementMenu() {
         boolean running = true;
         while (running) {
-            uiHelper.printHeader("╔════════════════════════════════════════╗");
-            uiHelper.printHeader("║   MERCHANDISE MANAGEMENT MENU          ║");
-            uiHelper.printHeader("╚════════════════════════════════════════╝");
+            uiHelper.clearTerminal();
+            uiHelper.printSubmenuHeader("MERCHANDISE MANAGEMENT MENU");
             uiHelper.printOption("1. View All Merchandise");
             uiHelper.printOption("2. View Merchandise by Category");
             uiHelper.printOption("3. Add New Product");

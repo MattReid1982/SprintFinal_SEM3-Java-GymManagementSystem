@@ -14,9 +14,8 @@ public class AdminMaintenanceUIHandler {
     public void adminMaintenanceMenu() {
         boolean running = true;
         while (running) {
-            uiHelper.printHeader("╔════════════════════════════════════════╗");
-            uiHelper.printHeader("║   ADMIN & MAINTENANCE MENU             ║");
-            uiHelper.printHeader("╚════════════════════════════════════════╝");
+            uiHelper.clearTerminal();
+            uiHelper.printSubmenuHeader("ADMIN & MAINTENANCE MENU");
             uiHelper.printOption("1. Database Status");
             uiHelper.printOption("2. System Information");
             uiHelper.printOption("3. Settings");

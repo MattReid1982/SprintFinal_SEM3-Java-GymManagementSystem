@@ -1,5 +1,9 @@
 package com.keyin.gymmanagement.models;
 
+/**
+ * Represents an authenticated user session with credentials and role
+ * information.
+ */
 public class UserAuth {
     private int userId;
     private String username;

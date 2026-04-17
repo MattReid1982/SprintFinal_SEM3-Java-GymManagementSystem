@@ -5,6 +5,9 @@ import com.keyin.gymmanagement.models.UserAuth;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/**
+ * Handles user authentication UI, including login and registration flows.
+ */
 public class AuthUIHandler {
     private final Scanner scanner;
     private final AuthDAO authDAO;
@@ -13,18 +16,18 @@ public class AuthUIHandler {
     public AuthUIHandler(Scanner scanner, AuthDAO authDAO) {
         this.scanner = scanner;
         this.authDAO = authDAO;
+        /**
+         * Main authentication menu loop. Returns a UserAuth object on successful login,
+         * null on exit.
+         */
         this.uiHelper = new UIHelper();
     }
 
     public UserAuth authenticationMenu() {
         boolean authenticated = false;
         while (!authenticated) {
-            System.out.println("\n" + UIHelper.BRIGHT_CYAN + UIHelper.BOLD + "╔═══════════════════════════════════════╗"
-                    + UIHelper.RESET);
-            System.out.println(UIHelper.BRIGHT_CYAN + UIHelper.BOLD + "║    GYM MANAGEMENT SYSTEM - LOGIN       ║"
-                    + UIHelper.RESET);
-            System.out.println(UIHelper.BRIGHT_CYAN + UIHelper.BOLD + "╚═══════════════════════════════════════╝"
-                    + UIHelper.RESET);
+            uiHelper.clearTerminal();
+            uiHelper.printSubmenuHeader("GYM MANAGEMENT SYSTEM - LOGIN");
             uiHelper.printOption("1. Login");
             uiHelper.printOption("2. Register");
             uiHelper.printOption("3. Exit");
