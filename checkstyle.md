@@ -13,6 +13,7 @@
 **Java Checkstyle Auto-Fix Toolkit** is a powerful Java code quality automation solution created by **Keith Bishop** ([GitHub Profile](https://github.com/kbishopzz)).
 
 This project is **100% Open Source** and available at:
+
 - **Repository:** https://github.com/kbishopzz/java-checkstyle-autofix
 - **License:** MIT License (Free for personal and commercial use)
 
@@ -45,15 +46,15 @@ This project uses **Apache Maven Checkstyle Plugin** to enforce consistent code 
 
 The Java Checkstyle Auto-Fix Toolkit provides significant advantages for code quality management:
 
-| Benefit | Impact |
-|---------|--------|
-| ⚡ **Save Hours** | Automatically fixes 60%+ of common Checkstyle violations |
-| 🎯 **One Command** | Replaces complex tool chains with single `checkstyle` command |
-| 🔧 **Zero Config** | Works out-of-the-box with sensible defaults |
+| Benefit                 | Impact                                                        |
+| ----------------------- | ------------------------------------------------------------- |
+| ⚡ **Save Hours**       | Automatically fixes 60%+ of common Checkstyle violations      |
+| 🎯 **One Command**      | Replaces complex tool chains with single `checkstyle` command |
+| 🔧 **Zero Config**      | Works out-of-the-box with sensible defaults                   |
 | 🚀 **Production Ready** | Used by students and professionals for code quality assurance |
-| 📚 **Well Documented** | Comprehensive guides, examples, and troubleshooting |
-| 🎨 **Google Style** | Industry-standard formatting built-in |
-| 🛡️ **Open Source** | MIT licensed - free for personal and commercial use |
+| 📚 **Well Documented**  | Comprehensive guides, examples, and troubleshooting           |
+| 🎨 **Google Style**     | Industry-standard formatting built-in                         |
+| 🛡️ **Open Source**      | MIT licensed - free for personal and commercial use           |
 
 ---
 
@@ -509,15 +510,15 @@ This integration is powered by the **Java Checkstyle Auto-Fix Toolkit**, an open
 
 ### Toolkit Information
 
-| Property | Details |
-|----------|---------|
-| **Creator** | Keith Bishop (@kbishopzz) |
-| **Repository** | https://github.com/kbishopzz/java-checkstyle-autofix |
-| **License** | MIT License (Copyright © 2026 Keith Bishop) |
-| **Status** | Actively Maintained ✅ |
-| **Platform Support** | macOS, Linux (Windows via WSL) |
-| **Language** | Shell Script, Perl, Java Configuration |
-| **Dependencies** | Checkstyle 10.12.7+, google-java-format, Java 8+ |
+| Property             | Details                                              |
+| -------------------- | ---------------------------------------------------- |
+| **Creator**          | Keith Bishop (@kbishopzz)                            |
+| **Repository**       | https://github.com/kbishopzz/java-checkstyle-autofix |
+| **License**          | MIT License (Copyright © 2026 Keith Bishop)         |
+| **Status**           | Actively Maintained ✅                               |
+| **Platform Support** | macOS, Linux (Windows via WSL)                       |
+| **Language**         | Shell Script, Perl, Java Configuration               |
+| **Dependencies**     | Checkstyle 10.12.7+, google-java-format, Java 8+     |
 
 ### Using This Toolkit
 
@@ -533,7 +534,7 @@ If you find this integration valuable for your project:
 This toolkit leverages:
 
 - 🔧 **Checkstyle** by the Checkstyle team - Static code analysis
-- 🎨 **google-java-format** by Google - Code formatter  
+- 🎨 **google-java-format** by Google - Code formatter
 - 📖 **Google Java Style Guide** - Industry standard coding conventions
 
 ---
@@ -557,7 +558,7 @@ This Gym Management System project utilizes the Checkstyle toolkit integration t
 ✅ Enforce Google Java Style Guide compliance automatically  
 ✅ Enable seamless code quality checks during Maven builds  
 ✅ Provide team members with standardized formatting rules  
-✅ Document best practices for students and instructors  
+✅ Document best practices for students and instructors
 
 ### Quick Commands for This Project
 
