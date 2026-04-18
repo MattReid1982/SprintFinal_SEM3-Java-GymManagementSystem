@@ -222,21 +222,34 @@ The Java Checkstyle Auto-Fix Toolkit (by Keith Bishop) provides intelligent auto
 Fix indentation, formatting, and imports in a specific file:
 
 ```bash
-checkstyle MyClass.java
+checkstyle src/main/java/com/keyin/gymmanagement/models/MyClass.java
 ```
 
 ### Auto-Fix All Java Files in Project
 
-Fix all Java files in the current directory and subdirectories:
+Fix all Java files using the toolkit. Several approaches:
 
+**Approach 1: Recursive glob pattern (from project root)**
 ```bash
-checkstyle *.java
+checkstyle src/main/java/com/keyin/gymmanagement/**/*.java
 ```
 
-Or with recursive search:
-
+**Approach 2: Navigate to source directory**
 ```bash
-find . -name "*.java" -type f -exec checkstyle {} \;
+cd src/main/java/com/keyin/gymmanagement
+checkstyle **/*.java
+```
+
+**Approach 3: Find + exec (most reliable)**
+```bash
+find src/main/java -name "*.java" -type f -exec checkstyle {} \;
+```
+
+**Approach 4: Loop through files**
+```bash
+for file in $(find src/main/java -name "*.java" -type f); do 
+  checkstyle "$file"
+done
 ```
 
 ### Auto-Fix Options
@@ -246,7 +259,7 @@ find . -name "*.java" -type f -exec checkstyle {} \;
 Run auto-fixes but skip google-java-format:
 
 ```bash
-checkstyle --no-format MyClass.java
+checkstyle --no-format src/main/java/com/keyin/gymmanagement/**/*.java
 ```
 
 #### Skip Auto-Fixing (Format Only)
@@ -254,7 +267,7 @@ checkstyle --no-format MyClass.java
 Run google-java-format without checkstyle fixes:
 
 ```bash
-checkstyle --no-fix MyClass.java
+checkstyle --no-fix src/main/java/com/keyin/gymmanagement/**/*.java
 ```
 
 #### Check Only (No Modifications)
@@ -262,7 +275,7 @@ checkstyle --no-fix MyClass.java
 Check violations without applying any fixes or formatting:
 
 ```bash
-checkstyle --no-fix --no-format MyClass.java
+checkstyle --no-fix --no-format src/main/java/com/keyin/gymmanagement/**/*.java
 ```
 
 #### Use Custom Configuration
@@ -270,7 +283,22 @@ checkstyle --no-fix --no-format MyClass.java
 Apply fixes with a specific checkstyle configuration file:
 
 ```bash
-checkstyle -c checkstyle.xml MyClass.java
+checkstyle -c checkstyle.xml src/main/java/com/keyin/gymmanagement/**/*.java
+```
+
+#### Troubleshooting Path Issues
+
+If you get `zsh: no matches found: *.java`, the Java files are in a subdirectory.
+
+**Solution:** Use full paths or navigate to the correct directory:
+
+```bash
+# From project root
+find src/main/java -name "*.java" -type f -exec checkstyle {} \;
+
+# Or navigate to source first
+cd src/main/java/com/keyin/gymmanagement
+checkstyle **/*.java
 ```
 
 ### Real-World Performance (This Project)
