@@ -303,6 +303,29 @@ Key Maven dependencies configured in `pom.xml`:
 
 ---
 
+## ✅ Code Quality & Checkstyle
+
+This project uses **Maven Checkstyle Plugin** for automatic code quality verification and Google Java Style Guide compliance.
+
+### Quick Check
+
+Run checkstyle validation:
+
+```bash
+mvn checkstyle:check
+```
+
+For detailed information on Checkstyle configuration, usage, and best practices, see [**checkstyle.md**](./checkstyle.md).
+
+### Key Features
+
+- **Google Style Compliance** - Validates code against Google Java Style Guide (80-character line limit, proper indentation, naming conventions)
+- **Automatic Validation** - Runs during Maven build validation phase
+- **Console Output** - Real-time feedback on style violations
+- **Non-Blocking** - Violations reported but don't prevent builds (failsOnError: false)
+
+---
+
 ## 🤝 Contributing
 
 This is a collaborative student project. Team contributions:
