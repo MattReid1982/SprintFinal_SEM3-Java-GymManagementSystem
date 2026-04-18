@@ -1,7 +1,7 @@
 /**
- * Main entry point for the Gym Management System application.
- * Orchestrates the lifecycle of the application, including database initialization,
- * user authentication, and role-based menu navigation.
+ * Main entry point for the Gym Management System application. Orchestrates the lifecycle of the
+ * application, including database initialization, user authentication, and role-based menu
+ * navigation.
  */
 package com.keyin.gymmanagement;
 
@@ -24,128 +24,136 @@ import com.keyin.gymmanagement.ui.ReportsUIHandler;
 import com.keyin.gymmanagement.ui.TrainerUIHandler;
 import com.keyin.gymmanagement.ui.UIHelper;
 import com.keyin.gymmanagement.ui.UserManagementUIHandler;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class App {
-    private static Connection connection;
-    private static Scanner scanner;
-    private static AuthDAO authDAO;
-    private static MemberDAO memberDAO;
-    private static TrainerDAO trainerDAO;
-    private static AdminDAO adminDAO;
-    private static GymClassDAO gymClassDAO;
-    private static MerchandiseDAO merchandiseDAO;
-    private static UserAuth currentUser;
+  private static Connection connection;
+  private static Scanner scanner;
+  private static AuthDAO authDAO;
+  private static MemberDAO memberDAO;
+  private static TrainerDAO trainerDAO;
+  private static AdminDAO adminDAO;
+  private static GymClassDAO gymClassDAO;
+  private static MerchandiseDAO merchandiseDAO;
+  private static UserAuth currentUser;
 
-    private static AuthUIHandler authHandler;
-    private static MemberUIHandler memberHandler;
-    private static TrainerUIHandler trainerHandler;
-    private static AdminUIHandler adminHandler;
-    private static UIHelper uiHelper;
+  private static AuthUIHandler authHandler;
+  private static MemberUIHandler memberHandler;
+  private static TrainerUIHandler trainerHandler;
+  private static AdminUIHandler adminHandler;
+  private static UIHelper uiHelper;
 
-    /**
-     * Main entry point. Establishes database connection, authenticates user, and
-     * routes to appropriate menu.
-     */
-    public static void main(String[] args) {
-        try {
-            connection = DatabaseConnection.getConnection();
+  /**
+   * Main entry point. Establishes database connection, authenticates user, and routes to
+   * appropriate menu.
+   */
+  public static void main(String[] args) {
+    try {
+      connection = DatabaseConnection.getConnection();
 
-            initializeDAOs();
-            uiHelper = new UIHelper();
-            uiHelper.clearTerminal();
-            uiHelper.printSuccess("Connected to PostgreSQL on 127.0.0.1 using default username 'postgres'.");
+      initializeDAOs();
+      uiHelper = new UIHelper();
+      uiHelper.clearTerminal();
+      uiHelper.printSuccess(
+          "Connected to PostgreSQL on 127.0.0.1 using default username 'postgres'.");
 
-            scanner = new Scanner(System.in);
+      scanner = new Scanner(System.in);
 
-            boolean appRunning = true;
-            while (appRunning) {
-                authHandler = new AuthUIHandler(scanner, authDAO);
-                currentUser = authHandler.authenticationMenu();
+      boolean appRunning = true;
+      while (appRunning) {
+        authHandler = new AuthUIHandler(scanner, authDAO);
+        currentUser = authHandler.authenticationMenu();
 
-                if (currentUser == null) {
-                    appRunning = false;
-                    continue;
-                }
-
-                if ("GUEST".equals(currentUser.getRole())) {
-                    MembershipUIHandler membershipHandler = new MembershipUIHandler(scanner, memberDAO, authDAO);
-                    if (membershipHandler.selectMembership(currentUser)) {
-                        mainMenu();
-                    }
-                } else {
-                    mainMenu();
-                }
-            }
-        } catch (SQLException e) {
-            if (uiHelper != null) {
-                uiHelper.printError("Failed to connect to PostgreSQL database. Please ensure the database is running.");
-            } else {
-                System.err.println("Failed to connect to PostgreSQL database: " + e.getMessage());
-            }
-            e.printStackTrace();
-        } finally {
-            closeResources();
-            /**
-             * Initializes all Data Access Objects with the active database connection.
-             */
+        if (currentUser == null) {
+          appRunning = false;
+          continue;
         }
-    }
 
-    private static void initializeDAOs() {
-        authDAO = new AuthDAO(connection);
-        memberDAO = new MemberDAO(connection);
-        trainerDAO = new TrainerDAO(connection);
-        adminDAO = new AdminDAO(connection);
-        gymClassDAO = new GymClassDAO(connection);
-        /**
-         * Displays the main menu and routes to role-specific handlers (Member, Trainer,
-         * or Admin).
-         */
-        merchandiseDAO = new MerchandiseDAO(connection);
-    }
-
-    private static void mainMenu() {
-        boolean running = true;
-        while (running) {
-            updateHandlersWithCurrentUser();
-
-            if ("MEMBER".equals(currentUser.getRole())) {
-                running = memberHandler.memberMenu();
-            } else if ("TRAINER".equals(currentUser.getRole())) {
-                running = trainerHandler.trainerMenu();
-            } else {
-                running = adminHandler.adminMenu();
-            }
+        if ("GUEST".equals(currentUser.getRole())) {
+          MembershipUIHandler membershipHandler =
+              new MembershipUIHandler(scanner, memberDAO, authDAO);
+          if (membershipHandler.selectMembership(currentUser)) {
+            mainMenu();
+          }
+        } else {
+          mainMenu();
         }
+      }
+    } catch (SQLException e) {
+      if (uiHelper != null) {
+        uiHelper.printError(
+            "Failed to connect to PostgreSQL database. Please ensure the database is running.");
+      } else {
+        System.err.println("Failed to connect to PostgreSQL database: " + e.getMessage());
+      }
+      e.printStackTrace();
+    } finally {
+      closeResources();
+      /** Initializes all Data Access Objects with the active database connection. */
     }
+  }
 
-    private static void updateHandlersWithCurrentUser() {
-        ClassManagementUIHandler classHandler = new ClassManagementUIHandler(scanner, gymClassDAO, memberDAO);
-        UserManagementUIHandler userHandler = new UserManagementUIHandler(scanner, memberDAO, trainerDAO, adminDAO);
-        MerchandiseUIHandler merchandiseHandler = new MerchandiseUIHandler(scanner, merchandiseDAO);
-        ReportsUIHandler reportsHandler = new ReportsUIHandler(scanner, memberDAO, gymClassDAO, trainerDAO,
-                merchandiseDAO);
-        AdminMaintenanceUIHandler maintenanceHandler = new AdminMaintenanceUIHandler(scanner);
+  private static void initializeDAOs() {
+    authDAO = new AuthDAO(connection);
+    memberDAO = new MemberDAO(connection);
+    trainerDAO = new TrainerDAO(connection);
+    adminDAO = new AdminDAO(connection);
+    gymClassDAO = new GymClassDAO(connection);
+    /** Displays the main menu and routes to role-specific handlers (Member, Trainer, or Admin). */
+    merchandiseDAO = new MerchandiseDAO(connection);
+  }
 
-        memberHandler = new MemberUIHandler(scanner, memberDAO, gymClassDAO, merchandiseDAO, currentUser);
-        trainerHandler = new TrainerUIHandler(scanner, memberDAO, currentUser, classHandler, reportsHandler);
-        adminHandler = new AdminUIHandler(scanner, currentUser, userHandler, classHandler, merchandiseHandler,
-                reportsHandler, maintenanceHandler);
+  private static void mainMenu() {
+    boolean running = true;
+    while (running) {
+      updateHandlersWithCurrentUser();
+
+      if ("MEMBER".equals(currentUser.getRole())) {
+        running = memberHandler.memberMenu();
+      } else if ("TRAINER".equals(currentUser.getRole())) {
+        running = trainerHandler.trainerMenu();
+      } else {
+        running = adminHandler.adminMenu();
+      }
     }
+  }
 
-    private static void closeResources() {
-        if (scanner != null) {
-            scanner.close();
-        }
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException ignored) {
-            }
-        }
+  private static void updateHandlersWithCurrentUser() {
+    ClassManagementUIHandler classHandler =
+        new ClassManagementUIHandler(scanner, gymClassDAO, memberDAO);
+    UserManagementUIHandler userHandler =
+        new UserManagementUIHandler(scanner, memberDAO, trainerDAO, adminDAO);
+    MerchandiseUIHandler merchandiseHandler = new MerchandiseUIHandler(scanner, merchandiseDAO);
+    ReportsUIHandler reportsHandler =
+        new ReportsUIHandler(scanner, memberDAO, gymClassDAO, trainerDAO, merchandiseDAO);
+    AdminMaintenanceUIHandler maintenanceHandler = new AdminMaintenanceUIHandler(scanner);
+
+    memberHandler =
+        new MemberUIHandler(scanner, memberDAO, gymClassDAO, merchandiseDAO, currentUser);
+    trainerHandler =
+        new TrainerUIHandler(scanner, memberDAO, currentUser, classHandler, reportsHandler);
+    adminHandler =
+        new AdminUIHandler(
+            scanner,
+            currentUser,
+            userHandler,
+            classHandler,
+            merchandiseHandler,
+            reportsHandler,
+            maintenanceHandler);
+  }
+
+  private static void closeResources() {
+    if (scanner != null) {
+      scanner.close();
     }
+    if (connection != null) {
+      try {
+        connection.close();
+      } catch (SQLException ignored) {
+      }
+    }
+  }
 }

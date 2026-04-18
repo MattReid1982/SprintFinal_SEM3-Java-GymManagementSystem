@@ -230,24 +230,28 @@ checkstyle src/main/java/com/keyin/gymmanagement/models/MyClass.java
 Fix all Java files using the toolkit. Several approaches:
 
 **Approach 1: Recursive glob pattern (from project root)**
+
 ```bash
 checkstyle src/main/java/com/keyin/gymmanagement/**/*.java
 ```
 
 **Approach 2: Navigate to source directory**
+
 ```bash
 cd src/main/java/com/keyin/gymmanagement
 checkstyle **/*.java
 ```
 
 **Approach 3: Find + exec (most reliable)**
+
 ```bash
 find src/main/java -name "*.java" -type f -exec checkstyle {} \;
 ```
 
 **Approach 4: Loop through files**
+
 ```bash
-for file in $(find src/main/java -name "*.java" -type f); do 
+for file in $(find src/main/java -name "*.java" -type f); do
   checkstyle "$file"
 done
 ```
