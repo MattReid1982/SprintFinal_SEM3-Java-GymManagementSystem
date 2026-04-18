@@ -26,6 +26,14 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>java-checkstyle-autofix</id>
+            <name>Java Checkstyle Autofix Repository</name>
+            <url>https://github.com/kbishopzz/java-checkstyle-autofix</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
@@ -60,6 +68,26 @@
                         <id>run</id>
                         <goals>
                             <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <configLocation>google_checks.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>false</failsOnError>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>checkstyle</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
