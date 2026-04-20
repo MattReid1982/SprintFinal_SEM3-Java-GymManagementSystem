@@ -215,6 +215,105 @@ mvn clean package
 mvn exec:java@run
 ```
 
+
+> Run these commands from the project root: `/Users/student2/Documents/Keyin/SprintFinal_SEM3-Java-GymManagementSystem`.
+
+The project has been compiled and completed by 3 people.
+
+(Matt - Person 1 work)
+
+Authentication, Users and Database (Backend Core)
+
+Main focus: User System + MongoDB + security
+
+Responsibilities:
+
+MongoDB setup
+
+- Connect database
+
+- Create Schemas/models:
+  - Users(username, hashed password, role, join date)
+  - Messages(content, sender, timestamp)
+
+- Authentication system
+  - Register(with validation + unique usernames)
+  - Login System(sessions)
+  - Password hashing with bcrypt
+  - Logout(session destroy + redirect)
+
+- User Roles
+  - Implement admin vs regular user.
+
+- Profile System
+  - View own profile
+  - View other users' profiles
+  - Restrict access(must be logged in)
+
+Deliverables: - Working login/registration system - Secure password handling - Fully functional MongoDB integration - Profile Pages
+
+(Charles - Person 2 work)
+
+Frontend, views and UI (EJS + UX)
+
+Main Focus: Everything the user sees.
+
+Responsibilities:
+
+- EJS templates
+  - Landing Page (Login/Signup prompt)
+  - Login page
+  - Registration page
+  - Chat page layout
+  - Profile pages
+  - Admin dashboard UI
+
+- Header (EJS partial)
+  - Navigation:
+    - Chat
+    - Profile
+    - Logout
+    - Admin (if applicable)
+
+- Frontend Logic
+  - Display:
+    - Messages (with timestamp + username)
+    - Online users list
+    - "Users Joined" notifications
+  - Error messages for signup/ login
+
+- Homepage feature
+  - Show number of users online (without socket connection)
+
+Deliverables: - Clean, consistent UI across all pages - Fully working navigation/header - Proper rendering of dynamic data
+
+(Keith - Person 3 work)
+
+Real-time Chat & Admin Features (WebSockets + Integration)
+
+Main Focus: WebSockets + live chat + admin controls
+
+Responsibilities:
+
+    - WebSocket setup (express-ws)
+
+    - Real-time chat system
+        - Send/Receive messages instantly
+        - Broadcast messages to all users
+        - Store messages in MongoDB
+
+    - Live features
+        - Online users list updates
+        - "User Joined" notifications
+        - Chat history since login
+
+    - Admin dashboard functionality
+        - View all users
+        - Ban/remove users
+        - Enforce bans in system
+
+Deliverables: - Fully working real-time chat - Live updates (user/messages) - Admin controls working end-to-end.
+
 Or directly:
 
 ```bash
@@ -429,3 +528,4 @@ MIT License - See LICENSE file for details
 ---
 
 _Built with ☕ Java and 💪 determination by Keith Bishop, Matt Reid, and Charles Rubia_
+ 3d2382e (Write up for the readme section involving all of our roles and responsibilities.)
