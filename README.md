@@ -215,49 +215,42 @@ mvn clean package
 mvn exec:java@run
 ```
 
-> Run these commands from the project root: `/Users/student2/Documents/Keyin/SprintFinal_SEM3-Java-GymManagementSystem`.
+Or directly:
 
-Members Responsibilities:
+```bash
+mvn compile exec:java
+```
 
-Person 1 - Matt
+---
 
-(Handles the data and business logic
-Responsibilities:
-Create classes (e.g., User, Member, Trainer, Admin, etc.)
-Define attributes, constructors, getters/setters
-Implement core logic methods (e.g., calculations, rules, validations)
-Handle file/database structure if needed (basic data representation))
+## 📖 Usage Guide
 
-issues: Github integration for matching the branches.
+### Login Flow
 
-Person 2 - Charles
+1. **Start Application** - Terminal clears and displays login screen
+2. **Choose Option:**
+   - `1` - Login with existing credentials
+   - `2` - Register as new user (guest role)
+   - `3` - Exit system
 
-(Handles what the system does
-Responsibilities:
-Implement system features:
-Add / remove / update users
-Booking classes
-Payments / subscriptions
-Create service/helper classes (e.g., GymService, BookingManager)
-Connect logic from Person 1 to actual functionality)
+### Role-Based Access
 
-Issues:
+#### 👥 Member Dashboard
 
-Person 3 - Keith
+- View membership details and status
+- Browse and enroll in available classes
+- Shop gym merchandise
+- Purchase products and manage purchases
 
-(Handles interaction and flow
+#### 👨‍🏫 Trainer Dashboard
 
-Responsibilities:
+- Manage class schedules
+- View member roster
+- Generate trainer statistics reports
+- Access class enrollment information
 
-Build the main() method
-Create menus (console UI)
-Handle user input/output
-Call methods from Person 2
-Control program flow)
+#### 🔑 Admin Dashboard
 
-<<<<<<< HEAD
-Issues:
-=======
 - User management (create/edit/delete users)
 - Class management and scheduling
 - Merchandise inventory management
@@ -355,7 +348,7 @@ This is a collaborative student project. Team contributions:
 
 ---
 
-## � Development Roles & Responsibilities
+## 👥 Development Roles & Responsibilities
 
 This section outlines the specialized development roles and responsibilities for team members working on the gym management system:
 
@@ -402,7 +395,7 @@ This section outlines the specialized development roles and responsibilities for
 
 ---
 
-## �📝 Code Documentation
+## 📝 Code Documentation
 
 All model classes include JavaDoc comments for:
 
@@ -414,7 +407,7 @@ All model classes include JavaDoc comments for:
 
 ---
 
-## � Recent Updates (Version 1.0 Final)
+## 🔄 Recent Updates (Version 1.0 Final)
 
 ### Bug Fixes & Enhancements
 
@@ -483,4 +476,3 @@ MIT License - See LICENSE file for details
 ---
 
 _Built with ☕ Java and 💪 determination by Keith Bishop, Matt Reid, and Charles Rubia_
->>>>>>> 91c7a5fe7a9abe9da4b18623c228ea93699b5afe
