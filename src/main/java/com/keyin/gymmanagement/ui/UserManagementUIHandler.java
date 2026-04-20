@@ -66,6 +66,8 @@ public class UserManagementUIHandler {
     for (Member member : members) {
       System.out.println(member);
     }
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 
   private void displayTrainers() {
@@ -74,6 +76,8 @@ public class UserManagementUIHandler {
     for (Trainer trainer : trainers) {
       System.out.println(trainer);
     }
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 
   private void displayAdmins() {
@@ -82,6 +86,8 @@ public class UserManagementUIHandler {
     for (Admin admin : admins) {
       System.out.println(admin);
     }
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 
   private void addNewMember() {

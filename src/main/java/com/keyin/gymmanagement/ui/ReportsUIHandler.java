@@ -42,8 +42,7 @@ public class ReportsUIHandler {
       uiHelper.printOption("2. Class Enrollment Report");
       uiHelper.printOption("3. Trainer Statistics");
       uiHelper.printOption("4. Merchandise Inventory Report");
-      uiHelper.printOption("5. Revenue Report");
-      uiHelper.printOption("6. Back to Main Menu");
+      uiHelper.printOption("5. Back to Main Menu");
       uiHelper.printPrompt("Choose an option: ");
 
       String choice = scanner.nextLine().trim();
@@ -54,8 +53,7 @@ public class ReportsUIHandler {
         case "2" -> classEnrollmentReport();
         case "3" -> trainerStatistics();
         case "4" -> merchandiseInventoryReport();
-        case "5" -> revenueReport();
-        case "6" -> running = false;
+        case "5" -> running = false;
         default -> uiHelper.printError("Invalid option. Please try again.");
       }
       System.out.println();
@@ -68,6 +66,8 @@ public class ReportsUIHandler {
     System.out.println("Total Members: " + members.size());
     System.out.println("Active Members: " + members.stream().filter(Member::isActive).count());
     System.out.println("Inactive Members: " + members.stream().filter(m -> !m.isActive()).count());
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 
   private void classEnrollmentReport() {
@@ -83,30 +83,29 @@ public class ReportsUIHandler {
               gymClass.getCapacity(),
               occupancyRate));
     }
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 
   private void trainerStatistics() {
     List<Trainer> trainers = trainerDAO.findAll();
     uiHelper.printSection("─── TRAINER STATISTICS ───");
     System.out.println("Total Trainers: " + trainers.size());
-    double avgExperience =
-        trainers.stream().mapToInt(Trainer::getYearsExperience).average().orElse(0);
+    double avgExperience = trainers.stream().mapToInt(Trainer::getYearsExperience).average().orElse(0);
     System.out.println(String.format("Average Experience: %.1f years", avgExperience));
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 
   private void merchandiseInventoryReport() {
     List<Merchandise> items = merchandiseDAO.findAll();
     uiHelper.printSection("─── MERCHANDISE INVENTORY REPORT ───");
-    double totalInventoryValue =
-        items.stream().mapToDouble(m -> m.getPrice() * m.getQuantityInStock()).sum();
+    double totalInventoryValue = items.stream().mapToDouble(m -> m.getPrice() * m.getQuantityInStock()).sum();
     System.out.println("Total Products: " + items.size());
     System.out.println(
         "Total Units in Stock: " + items.stream().mapToInt(Merchandise::getQuantityInStock).sum());
     System.out.println(String.format("Total Inventory Value: $%.2f", totalInventoryValue));
-  }
-
-  private void revenueReport() {
-    uiHelper.printSection("─── REVENUE REPORT ───");
-    uiHelper.printWarning("Feature coming soon: Integrate with sales transactions");
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 }

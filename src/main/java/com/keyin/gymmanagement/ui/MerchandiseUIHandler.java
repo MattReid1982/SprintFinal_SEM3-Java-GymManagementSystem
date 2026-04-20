@@ -57,6 +57,8 @@ public class MerchandiseUIHandler {
     for (Merchandise item : items) {
       System.out.println(item);
     }
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 
   private void displayMerchandiseByCategory() {
@@ -70,6 +72,8 @@ public class MerchandiseUIHandler {
         System.out.println(item);
       }
     }
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 
   private void addNewProduct() {
@@ -85,8 +89,7 @@ public class MerchandiseUIHandler {
     uiHelper.printPrompt("Enter Description: ");
     String description = scanner.nextLine().trim();
 
-    Merchandise merchandise =
-        new Merchandise(0, productName, category, price, quantity, description);
+    Merchandise merchandise = new Merchandise(0, productName, category, price, quantity, description);
     if (merchandiseDAO.create(merchandise)) {
       uiHelper.printSuccess("Product added successfully!");
     } else {
@@ -202,5 +205,7 @@ public class MerchandiseUIHandler {
     if (!hasLowStock) {
       uiHelper.printSuccess("All products have adequate stock.");
     }
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 }
