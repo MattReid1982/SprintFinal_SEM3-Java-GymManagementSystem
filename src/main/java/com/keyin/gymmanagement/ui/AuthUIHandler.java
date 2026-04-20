@@ -15,7 +15,8 @@ public class AuthUIHandler {
     this.scanner = scanner;
     this.authDAO = authDAO;
     /**
-     * Main authentication menu loop. Returns a UserAuth object on successful login, null on exit.
+     * Main authentication menu loop. Returns a UserAuth object on successful login,
+     * null on exit.
      */
     this.uiHelper = new UIHelper();
   }
@@ -59,14 +60,24 @@ public class AuthUIHandler {
       uiHelper.printPrompt("Enter password: ");
       String password = scanner.nextLine().trim();
 
-      UserAuth user = authDAO.login(username, password);
-      if (user != null) {
-        return user;
-      } else {
-        uiHelper.printError("Invalid username or password.");
+      try {
+        UserAuth user = authDAO.login(username, password);
+        if (user != null) {
+          return user;
+        } else {
+          uiHelper.printError("Bad username or password.");
+          uiHelper.printPrompt("\nPress Enter to continue...");
+          scanner.nextLine();
+        }
+      } catch (SQLException e) {
+        uiHelper.printError("Bad username or password.");
+        uiHelper.printPrompt("\nPress Enter to continue...");
+        scanner.nextLine();
       }
-    } catch (SQLException e) {
+    } catch (Exception e) {
       uiHelper.printError("Login failed: " + e.getMessage());
+      uiHelper.printPrompt("\nPress Enter to continue...");
+      scanner.nextLine();
     }
     return null;
   }

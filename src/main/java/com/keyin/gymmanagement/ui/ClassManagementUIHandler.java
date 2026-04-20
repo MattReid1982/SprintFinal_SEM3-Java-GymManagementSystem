@@ -30,9 +30,8 @@ public class ClassManagementUIHandler {
       uiHelper.printOption("3. Remove Member from Class");
       uiHelper.printOption("4. View Class Details");
       uiHelper.printOption("5. Add New Class");
-      uiHelper.printOption("6. Edit Class");
-      uiHelper.printOption("7. Delete Class");
-      uiHelper.printOption("8. Back to Main Menu");
+      uiHelper.printOption("6. Delete Class");
+      uiHelper.printOption("7. Back to Main Menu");
       uiHelper.printPrompt("Choose an option: ");
 
       String choice = scanner.nextLine().trim();
@@ -44,9 +43,8 @@ public class ClassManagementUIHandler {
         case "3" -> removeMemberFromClass();
         case "4" -> viewClassDetails();
         case "5" -> addNewClass();
-        case "6" -> editClass();
-        case "7" -> deleteClass();
-        case "8" -> running = false;
+        case "6" -> deleteClass();
+        case "7" -> running = false;
         default -> uiHelper.printError("Invalid option. Please try again.");
       }
       System.out.println();
@@ -59,6 +57,8 @@ public class ClassManagementUIHandler {
     for (GymClass gymClass : classes) {
       System.out.println(gymClass);
     }
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 
   private void viewClassDetails() {
@@ -69,12 +69,16 @@ public class ClassManagementUIHandler {
 
     if (gymClass == null) {
       uiHelper.printError("Class not found.");
+      uiHelper.printPrompt("\nPress Enter to continue...");
+      scanner.nextLine();
       return;
     }
 
     uiHelper.printSection(String.format("CLASS DETAILS: %s", gymClass.getClassName()));
     System.out.println(gymClass);
     System.out.println("Capacity Remaining: " + (gymClass.getCapacity() - gymClass.getEnrolled()));
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 
   private void enrollMemberInClass() {
@@ -150,21 +154,6 @@ public class ClassManagementUIHandler {
     }
   }
 
-  private void editClass() {
-    uiHelper.printSection("EDIT CLASS");
-    displayClasses();
-    uiHelper.printPrompt("Enter Class ID to edit: ");
-    int classId = InputHelper.getIntInput(scanner);
-    GymClass gymClass = gymClassDAO.findById(classId);
-
-    if (gymClass == null) {
-      uiHelper.printError("Class not found.");
-      return;
-    }
-
-    uiHelper.printWarning("Feature not yet implemented.");
-  }
-
   private void deleteClass() {
     uiHelper.printSection("DELETE CLASS");
     displayClasses();
@@ -181,5 +170,7 @@ public class ClassManagementUIHandler {
   private void displayMembers() {
     uiHelper.printSection("─── ALL MEMBERS ───");
     memberDAO.findAll().forEach(System.out::println);
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 }

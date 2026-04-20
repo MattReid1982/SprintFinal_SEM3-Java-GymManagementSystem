@@ -55,5 +55,7 @@ public class TrainerUIHandler {
   private void displayMembers() {
     uiHelper.printSection("─── ALL MEMBERS ───");
     memberDAO.findAll().forEach(System.out::println);
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 }

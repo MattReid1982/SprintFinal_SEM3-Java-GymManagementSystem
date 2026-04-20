@@ -257,6 +257,18 @@ mvn compile exec:java
 - Generate comprehensive reports
 - Database and system maintenance
 
+### Test Credentials
+
+The database comes pre-populated with test accounts for demonstration:
+
+| Username | Password   | Role    |
+| -------- | ---------- | ------- |
+| trainer1 | trainer123 | Trainer |
+| admin    | admin123   | Admin   |
+| member1  | member123  | Member  |
+
+**Note:** Use these credentials to test the system's functionality across different user roles.
+
 ---
 
 ## 🗄️ Database Schema
@@ -336,7 +348,54 @@ This is a collaborative student project. Team contributions:
 
 ---
 
-## 📝 Code Documentation
+## � Development Roles & Responsibilities
+
+This section outlines the specialized development roles and responsibilities for team members working on the gym management system:
+
+### 👤 Person 1 – Core Logic / Models
+
+**Handles the data and business logic**
+
+**Responsibilities:**
+
+- Create domain classes (e.g., User, Member, Trainer, Admin, GymClass, Merchandise)
+- Define attributes, constructors, getters/setters for all model entities
+- Implement core logic methods (e.g., calculations, rules, validations)
+- Handle file/database structure and basic data representation
+- Ensure models follow OOP principles and best practices
+
+### 👤 Person 2 – Functional Features / Services
+
+**Handles what the system does**
+
+**Responsibilities:**
+
+- Implement system features:
+  - Add / remove / update users
+  - Class bookings and enrollment management
+  - Payments and subscription handling
+- Create service/helper classes (e.g., GymService, BookingManager, PaymentProcessor)
+- Implement DAO classes for data persistence
+- Connect logic from Person 1 to actual functionality
+- Build business workflows and data operations
+
+### 👤 Person 3 – User Interface / Main Program
+
+**Handles interaction and flow**
+
+**Responsibilities:**
+
+- Build the main() method and application entry point
+- Create console-based menus and navigation
+- Handle user input/output and validation
+- Call service methods from Person 2
+- Control program flow and session management
+- Implement UI handlers for all user roles
+- Ensure consistent and intuitive user experience
+
+---
+
+## �📝 Code Documentation
 
 All model classes include JavaDoc comments for:
 
@@ -348,12 +407,39 @@ All model classes include JavaDoc comments for:
 
 ---
 
+## � Recent Updates (Version 1.0 Final)
+
+### Bug Fixes & Enhancements
+
+- ✅ **Enhanced Login Error Handling** - Added clear "Bad username or password" message with pause prompt when login fails
+- ✅ **Pause Prompts in Display Methods** - All data display methods now include "Press Enter to continue..." pause to prevent screen overflow
+- ✅ **Fixed Class Management Display** - View all classes displays properly with pause (fixes trainer and admin class viewing)
+- ✅ **Fixed Admin & Maintenance Menu** - Database status and system information display with proper pauses
+- ✅ **Improved User Experience** - Consistent flow control and error messaging across all UI handlers
+- ✅ **Database Connectivity** - PostgreSQL JDBC driver properly bundled and configured
+- ✅ **Authentication System** - Password verification using bcrypt hashing with proper error handling
+- ✅ **Removed Incomplete Features** - Cleaned up UI by removing non-functional "coming soon" placeholders:
+  - Admin & Maintenance: Settings menu removed
+  - Reports: Revenue Report removed
+  - Class Management: Edit Class removed
+
+### Verified Working Features
+
+- Login/Registration flow with proper error messages
+- All trainer menus (Class Management, View Members, Reports)
+- All admin menus (User Management, Class Management, Merchandise, Maintenance)
+- Member dashboard and purchasing
+- All 4 core reports (Member Summary, Class Enrollment, Trainer Statistics, Merchandise Inventory)
+- Class management (View, Add, Delete, Enroll, Remove)
+- User management (View, Add, Edit, Delete)
+
+---
+
 ## 🐛 Known Limitations
 
 - Console-based UI (no graphical interface)
 - Single-user session at a time
 - Local database only (no remote connection support)
-- Class edit functionality placeholder
 
 ---
 
@@ -384,8 +470,8 @@ MIT License - See LICENSE file for details
 
 ---
 
-**Last Updated:** April 2026  
-**Version:** 1.0 (Final)
+**Last Updated:** April 20, 2026  
+**Version:** 1.0 (Final - Production Ready)
 
 ---
 

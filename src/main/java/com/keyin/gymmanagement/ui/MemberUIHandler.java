@@ -60,30 +60,31 @@ public class MemberUIHandler {
 
   private void viewMembershipInfo() {
     uiHelper.printSection("MY MEMBERSHIP INFORMATION");
-    List<Member> allMembers = memberDAO.findAll();
-    for (Member member : allMembers) {
-      if (member.getId() == currentUser.getUserId()) {
-        System.out.println(UIHelper.BRIGHT_GREEN + "Name: " + UIHelper.RESET + member.getName());
-        System.out.println(UIHelper.BRIGHT_GREEN + "Email: " + UIHelper.RESET + member.getEmail());
-        System.out.println(
-            UIHelper.BRIGHT_GREEN
-                + "Membership Type: "
-                + UIHelper.RESET
-                + UIHelper.BRIGHT_YELLOW
-                + member.getMembershipType()
-                + UIHelper.RESET);
-        System.out.println(
-            UIHelper.BRIGHT_GREEN
-                + "Status: "
-                + UIHelper.RESET
-                + (member.isActive()
-                    ? UIHelper.BRIGHT_GREEN + "ACTIVE"
-                    : UIHelper.BRIGHT_RED + "INACTIVE")
-                + UIHelper.RESET);
-        return;
-      }
+    Member member = memberDAO.findById(currentUser.getUserId());
+
+    if (member != null) {
+      System.out.println(UIHelper.BRIGHT_GREEN + "Name: " + UIHelper.RESET + member.getName());
+      System.out.println(UIHelper.BRIGHT_GREEN + "Email: " + UIHelper.RESET + member.getEmail());
+      System.out.println(
+          UIHelper.BRIGHT_GREEN
+              + "Membership Type: "
+              + UIHelper.RESET
+              + UIHelper.BRIGHT_YELLOW
+              + member.getMembershipType()
+              + UIHelper.RESET);
+      System.out.println(
+          UIHelper.BRIGHT_GREEN
+              + "Status: "
+              + UIHelper.RESET
+              + (member.isActive()
+                  ? UIHelper.BRIGHT_GREEN + "ACTIVE"
+                  : UIHelper.BRIGHT_RED + "INACTIVE")
+              + UIHelper.RESET);
+    } else {
+      uiHelper.printWarning("Membership information not found. Please contact support.");
     }
-    uiHelper.printWarning("Membership information not found. Please contact support.");
+    uiHelper.printPrompt("\nPress Enter to continue...");
+    scanner.nextLine();
   }
 
   private void memberViewAndEnrollClasses() {
@@ -99,10 +100,9 @@ public class MemberUIHandler {
 
       for (GymClass gymClass : classes) {
         int spotsAvailable = gymClass.getCapacity() - gymClass.getEnrolled();
-        String availability =
-            spotsAvailable > 0
-                ? UIHelper.BRIGHT_GREEN + "AVAILABLE (" + spotsAvailable + " spots)"
-                : UIHelper.BRIGHT_RED + "FULL";
+        String availability = spotsAvailable > 0
+            ? UIHelper.BRIGHT_GREEN + "AVAILABLE (" + spotsAvailable + " spots)"
+            : UIHelper.BRIGHT_RED + "FULL";
         System.out.println(
             UIHelper.BRIGHT_CYAN
                 + "["
@@ -154,10 +154,9 @@ public class MemberUIHandler {
       }
 
       for (Merchandise item : items) {
-        String inStock =
-            item.getQuantityInStock() > 0
-                ? UIHelper.BRIGHT_GREEN + "IN STOCK"
-                : UIHelper.BRIGHT_RED + "OUT OF STOCK";
+        String inStock = item.getQuantityInStock() > 0
+            ? UIHelper.BRIGHT_GREEN + "IN STOCK"
+            : UIHelper.BRIGHT_RED + "OUT OF STOCK";
         System.out.println(
             UIHelper.BRIGHT_CYAN
                 + "["
