@@ -255,4 +255,232 @@ Handle user input/output
 Call methods from Person 2
 Control program flow)
 
+<<<<<<< HEAD
 Issues:
+=======
+- User management (create/edit/delete users)
+- Class management and scheduling
+- Merchandise inventory management
+- Generate comprehensive reports
+- Database and system maintenance
+
+### Test Credentials
+
+The database comes pre-populated with test accounts for demonstration:
+
+| Username | Password   | Role    |
+| -------- | ---------- | ------- |
+| trainer1 | trainer123 | Trainer |
+| admin    | admin123   | Admin   |
+| member1  | member123  | Member  |
+
+**Note:** Use these credentials to test the system's functionality across different user roles.
+
+---
+
+## 🗄️ Database Schema
+
+### Key Tables
+
+- **users_auth** - User credentials and authentication
+- **members** - Member profiles and membership details
+- **trainers** - Trainer information and specialization
+- **admins** - Admin user accounts
+- **gym_classes** - Class definitions and schedules
+- **merchandise** - Product inventory and pricing
+
+For full schema details, see `gym_db_schema.sql`
+
+---
+
+## 🔒 Security Features
+
+- **Password Hashing** - Secure password storage using bcrypt-style hashing
+- **Role-Based Access Control (RBAC)** - User roles determine available functions
+- **Session Management** - UserAuth objects track authenticated sessions
+- **Input Validation** - Comprehensive input validation across all handlers
+
+---
+
+## 🎨 UI/UX Features
+
+- **Colored Console Output** - ANSI color codes for enhanced readability
+- **Clear Terminal** - Fresh screen on each menu transition
+- **Structured Menus** - Box-drawn borders and consistent formatting
+- **Status Messages** - Success, error, and warning messages with icons
+- **Interactive Prompts** - User-friendly input guidance and validation
+
+---
+
+## 📦 Dependencies
+
+Key Maven dependencies configured in `pom.xml`:
+
+- **Java 17 Compiler** - Source and target Java 17
+- **PostgreSQL JDBC Driver** - Database connectivity
+- **Apache Maven Plugins** - Build and execution
+
+---
+
+## ✅ Code Quality & Checkstyle
+
+This project uses **Maven Checkstyle Plugin** for automatic code quality verification and Google Java Style Guide compliance.
+
+### Quick Check
+
+Run checkstyle validation:
+
+```bash
+mvn checkstyle:check
+```
+
+For detailed information on Checkstyle configuration, usage, and best practices, see [**checkstyle.md**](./checkstyle.md).
+
+### Key Features
+
+- **Google Style Compliance** - Validates code against Google Java Style Guide (80-character line limit, proper indentation, naming conventions)
+- **Automatic Validation** - Runs during Maven build validation phase
+- **Console Output** - Real-time feedback on style violations
+- **Non-Blocking** - Violations reported but don't prevent builds (failsOnError: false)
+
+---
+
+## 🤝 Contributing
+
+This is a collaborative student project. Team contributions:
+
+1. **Keith Bishop** - Database architecture, DAO implementations, and complete UI design/implementation
+2. **Matt Reid** - Project management and documentation
+3. **Charles Rubia** - Business logic, validation, and reporting
+
+---
+
+## � Development Roles & Responsibilities
+
+This section outlines the specialized development roles and responsibilities for team members working on the gym management system:
+
+### 👤 Person 1 – Core Logic / Models
+
+**Handles the data and business logic**
+
+**Responsibilities:**
+
+- Create domain classes (e.g., User, Member, Trainer, Admin, GymClass, Merchandise)
+- Define attributes, constructors, getters/setters for all model entities
+- Implement core logic methods (e.g., calculations, rules, validations)
+- Handle file/database structure and basic data representation
+- Ensure models follow OOP principles and best practices
+
+### 👤 Person 2 – Functional Features / Services
+
+**Handles what the system does**
+
+**Responsibilities:**
+
+- Implement system features:
+  - Add / remove / update users
+  - Class bookings and enrollment management
+  - Payments and subscription handling
+- Create service/helper classes (e.g., GymService, BookingManager, PaymentProcessor)
+- Implement DAO classes for data persistence
+- Connect logic from Person 1 to actual functionality
+- Build business workflows and data operations
+
+### 👤 Person 3 – User Interface / Main Program
+
+**Handles interaction and flow**
+
+**Responsibilities:**
+
+- Build the main() method and application entry point
+- Create console-based menus and navigation
+- Handle user input/output and validation
+- Call service methods from Person 2
+- Control program flow and session management
+- Implement UI handlers for all user roles
+- Ensure consistent and intuitive user experience
+
+---
+
+## �📝 Code Documentation
+
+All model classes include JavaDoc comments for:
+
+- Class descriptions
+- Constructor documentation
+- Getter method descriptions
+- Setter method descriptions
+- Business logic method documentation
+
+---
+
+## � Recent Updates (Version 1.0 Final)
+
+### Bug Fixes & Enhancements
+
+- ✅ **Enhanced Login Error Handling** - Added clear "Bad username or password" message with pause prompt when login fails
+- ✅ **Pause Prompts in Display Methods** - All data display methods now include "Press Enter to continue..." pause to prevent screen overflow
+- ✅ **Fixed Class Management Display** - View all classes displays properly with pause (fixes trainer and admin class viewing)
+- ✅ **Fixed Admin & Maintenance Menu** - Database status and system information display with proper pauses
+- ✅ **Improved User Experience** - Consistent flow control and error messaging across all UI handlers
+- ✅ **Database Connectivity** - PostgreSQL JDBC driver properly bundled and configured
+- ✅ **Authentication System** - Password verification using bcrypt hashing with proper error handling
+- ✅ **Removed Incomplete Features** - Cleaned up UI by removing non-functional "coming soon" placeholders:
+  - Admin & Maintenance: Settings menu removed
+  - Reports: Revenue Report removed
+  - Class Management: Edit Class removed
+
+### Verified Working Features
+
+- Login/Registration flow with proper error messages
+- All trainer menus (Class Management, View Members, Reports)
+- All admin menus (User Management, Class Management, Merchandise, Maintenance)
+- Member dashboard and purchasing
+- All 4 core reports (Member Summary, Class Enrollment, Trainer Statistics, Merchandise Inventory)
+- Class management (View, Add, Delete, Enroll, Remove)
+- User management (View, Add, Edit, Delete)
+
+---
+
+## 🐛 Known Limitations
+
+- Console-based UI (no graphical interface)
+- Single-user session at a time
+- Local database only (no remote connection support)
+
+---
+
+## 📚 Learning Objectives
+
+This project demonstrates:
+
+- **Object-Oriented Design** - Inheritance, encapsulation, and polymorphism
+- **Design Patterns** - DAO pattern, MVC-inspired architecture
+- **Database Integration** - JDBC, SQL operations, connection management
+- **User Interface Design** - Console UI, input handling, output formatting
+- **Software Architecture** - Layered architecture, separation of concerns
+- **Team Development** - Git collaboration, code organization, documentation
+
+---
+
+## 📄 License
+
+MIT License - See LICENSE file for details
+
+---
+
+## 📧 Contact
+
+**Project Repository:** [GitHub](https://github.com/MattReid1982/SprintFinal_SEM3-Java-GymManagementSystem)
+
+**Keyin College:** [Official Website](https://www.keyincollege.ca/)
+
+---
+
+**Last Updated:** April 20, 2026  
+**Version:** 1.0 (Final - Production Ready)
+
+---
+
+_Built with ☕ Java and 💪 determination by Keith Bishop, Matt Reid, and Charles Rubia_
+>>>>>>> 91c7a5fe7a9abe9da4b18623c228ea93699b5afe
